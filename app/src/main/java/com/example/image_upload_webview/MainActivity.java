@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -48,6 +49,9 @@ public class MainActivity extends AppCompatActivity {
     //private Button button;
      WebView webView;
     ProgressBar progressbar;
+    SwipeRefreshLayout swipeRefreshHotelDetails;
+
+
   //  WebView webView;
     private static final String TAG = MainActivity.class.getSimpleName();
     private String mCM;
@@ -128,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
 
         webView = findViewById(R.id.webView1);
         progressbar = findViewById(R.id.progressbarId);
+        swipeRefreshHotelDetails=findViewById(R.id.swipeRefreshHotelDetails);
         assert webView != null;
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
@@ -247,6 +252,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        //refresh layout
+        swipeRefreshHotelDetails.setOnRefreshListener(() -> {
+            // Log.e("ref","ref: 1");
+            webView.reload();
+            swipeRefreshHotelDetails.setRefreshing(false);
+
+        });
+
 
     }
 
@@ -262,6 +275,8 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Failed loading app!", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 
     // Create an image file
     private File createImageFile() throws IOException{
