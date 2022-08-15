@@ -144,10 +144,11 @@ public class MainActivity extends AppCompatActivity {
         webView.setWebViewClient(new Callback());
 
 
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             progressbar.setProgressTintList(ColorStateList.valueOf(Color.RED));
         }
-        //  progressbar.setMax(100);
+         progressbar.setMax(100);
         webView.setWebViewClient(new WebViewClient());
       //  webView.setWebViewClient(new HelloWebViewClient());
         webView.getSettings().setJavaScriptEnabled(true);
@@ -225,6 +226,23 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(chooserIntent, FCR);
                 return true;
             }
+
+        });
+
+        //progress bar
+        progressbar.setProgress(0);
+        webView.setWebChromeClient(new WebChromeClient() {
+            public void onProgressChanged(WebView view, int progress) {
+                progressbar.setProgress(progress);
+                if (progress == 100) {
+                    progressbar.setVisibility(View.INVISIBLE);
+                }else{
+                    progressbar.setVisibility(View.VISIBLE);
+                }
+                super.onProgressChanged(view,progress  );
+
+            }
+
 
         });
 
