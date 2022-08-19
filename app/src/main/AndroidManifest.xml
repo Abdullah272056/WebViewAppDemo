@@ -4,13 +4,16 @@
     package="com.example.image_upload_webview">
 
     <uses-sdk
-        android:minSdkVersion="8"/>
+        android:minSdkVersion="11"
+        tools:ignore="GradleOverrides" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+
 
     <application
         android:allowBackup="true"
@@ -22,9 +25,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Image_upload_webview"
-        tools:targetApi="31">
+        tools:targetApi="31"
+        tools:ignore="RtlEnabled">
         <activity
             android:name=".MainActivity"
+            android:configChanges="orientation|screenSize"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
