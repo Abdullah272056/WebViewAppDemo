@@ -444,13 +444,14 @@ public class MainActivity extends AppCompatActivity {
                         AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         builder.setTitle("Exit");
                         builder.setMessage("Do you want to exit now?");
-                        builder.setPositiveButton("No", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                            }
-                        });
-                        builder.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+                        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 MainActivity.super.onBackPressed();
+                            }
+                        });
+                        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
                             }
                         });
                         builder.show();
