@@ -366,6 +366,7 @@ public class MainActivity extends AppCompatActivity {
 
                             String DownloadImageURL = webViewHitTestResult.getExtra();
 
+
                             if(URLUtil.isValidUrl(DownloadImageURL)){
 
                                 DownloadManager.Request request = new DownloadManager.Request(Uri.parse(DownloadImageURL));
@@ -374,10 +375,15 @@ public class MainActivity extends AppCompatActivity {
                                 DownloadManager downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
                                 downloadManager.enqueue(request);
 
+                                String downloadPath= Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+
+
                                 Toast.makeText(MainActivity.this," Downloaded Successfully.",Toast.LENGTH_LONG).show();
+
+
                             }
                             else {
-                                Toast.makeText(MainActivity.this,"Sorry.. Something Went Wrong.",Toast.LENGTH_LONG).show();
+                                Toast.makeText(MainActivity.this,"Sorry.. Something Went Wrong!",Toast.LENGTH_LONG).show();
                             }
                             return false;
                         }
