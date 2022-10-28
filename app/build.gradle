@@ -9,8 +9,8 @@ android {
         applicationId "com.gmpabel.easyapps"
         minSdk 16
         targetSdk 32
-        versionCode 4
-        versionName "1.2"
+        versionCode 5
+        versionName "1.2.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
