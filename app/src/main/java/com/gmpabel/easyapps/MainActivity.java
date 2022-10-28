@@ -1,19 +1,16 @@
-package com.example.image_upload_webview;
+package com.gmpabel.easyapps;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -23,22 +20,21 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.webkit.ConsoleMessage;
 import android.webkit.CookieManager;
 import android.webkit.DownloadListener;
+import android.webkit.PermissionRequest;
 import android.webkit.URLUtil;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -48,6 +44,8 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -59,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     //private Button button;
      WebView webView;
     ProgressBar progressbar;
-    SwipeRefreshLayout swipeRefreshHotelDetails;
+//    SwipeRefreshLayout swipeRefreshHotelDetails;
 
 
   //  WebView webView;
@@ -68,6 +66,19 @@ public class MainActivity extends AppCompatActivity {
     private ValueCallback mUM;
     private ValueCallback<Uri[]> mUMA;
     private final static int FCR=1;
+    private TextView mProgressbarText;
+    private RelativeLayout mLoadFailedPage;
+
+
+
+
+    AlertDialog.Builder builder;
+    String test = "";
+    Button closeButton;
+    private int mDisplayHight;
+    private int mDisplayWidth;
+
+
 
 
     @Override
@@ -110,9 +121,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    AlertDialog.Builder builder;
-    String test = "";
-    Button closeButton;
 
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -120,6 +128,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().requestFeature(Window.FEATURE_PROGRESS);
+        // gettin display with and height in pixel
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        mDisplayHight = displayMetrics.heightPixels;
+        mDisplayWidth = displayMetrics.widthPixels;
+
         setContentView(R.layout.activity_main);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -134,7 +148,15 @@ public class MainActivity extends AppCompatActivity {
 
         webView = findViewById(R.id.webView1);
         progressbar = findViewById(R.id.progressbarId);
-        swipeRefreshHotelDetails=findViewById(R.id.swipeRefreshHotelDetails);
+        //swipeRefreshHotelDetails=findViewById(R.id.swipeRefreshHotelDetails);
+
+
+        webView = findViewById(R.id.webView1);
+        mLoadFailedPage = findViewById(R.id.web_view_load_error_page);
+        progressbar = findViewById(R.id.progressbarId);
+        mProgressbarText = findViewById(R.id.tx_progressbar);
+       // swipeRefreshHotelDetails=findViewById(R.id.swipeRefreshHotelDetails);
+
 
 
         registerForContextMenu(webView);
@@ -147,10 +169,15 @@ public class MainActivity extends AppCompatActivity {
         webSettings.setAllowFileAccess(true);
         webSettings.setAppCacheEnabled(true);
 
+        webSettings.setBuiltInZoomControls(true);
+        webSettings.setDisplayZoomControls(false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            webSettings.setMediaPlaybackRequiresUserGesture(false);
+        }
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            progressbar.setProgressTintList(ColorStateList.valueOf(Color.RED));
+            progressbar.setProgressTintList(ColorStateList.valueOf(Color.parseColor("#FF004E")));
         }
          progressbar.setMax(100);
         webView.loadUrl("https://easyshop64.com/");
@@ -184,18 +211,83 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Downloading File", Toast.LENGTH_LONG).show();
             }});
 
-        //refresh layout
-        swipeRefreshHotelDetails.setOnRefreshListener(() -> {
-            // Log.e("ref","ref: 1");
-            webView.reload();
-            swipeRefreshHotelDetails.setRefreshing(false);
 
+        //refresh layout
+//        swipeRefreshHotelDetails.setOnRefreshListener(() -> {
+//            // Log.e("ref","ref: 1");
+//            webView.reload();
+//            swipeRefreshHotelDetails.setRefreshing(false);
+//
+//        });
+
+
+        final boolean[] loadState = {true, false, true}; // loadingFinished, redirect,
+        // successfully reached web page
+        webView.setWebViewClient(new WebViewClient() {
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String urlNewString) {
+                if (!loadState[0]) { // loadingFinished
+                    loadState[1] = true; // redirect
+                }
+
+                loadState[0] = false; // loadingFinished
+                view.loadUrl(urlNewString);
+                return true;
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap facIcon) {
+                loadState[0] = false; // loadingFinished
+                //SHOW LOADING IF IT ISNT ALREADY VISIBLE
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                if(!loadState[1]){ // redirect
+                    loadState[0] = true; // loadingFinished
+                }
+
+                if(loadState[0] && !loadState[1]) { // loadingFinished, redirect
+                    if (loadState[2]) { // successfully reached web page
+                       webView.setVisibility(View.VISIBLE);
+                        //swipeRefreshHotelDetails.setVisibility(View.VISIBLE);
+                        mLoadFailedPage.setVisibility(View.GONE);
+                    }
+                    else {
+                        // occur some error to reach web page
+                        webView.setVisibility(View.GONE);
+                        //swipeRefreshHotelDetails.setVisibility(View.GONE);
+                        mLoadFailedPage.setVisibility(View.VISIBLE);
+
+                        TextView retry = findViewById(R.id.cnn_lost_retry_btn);
+                        retry.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                webView.reload();
+                            }
+                        });
+                    }
+                    loadState[2] = true;
+
+                } else{
+                    loadState[1] = false; // redirect
+                }
+
+            }
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                loadState[2] = false; // successfully reached web page
+                webView.setVisibility(View.GONE);
+                mLoadFailedPage.setVisibility(View.VISIBLE);
+              //  Toast.makeText(MainActivity.this, "failed", Toast.LENGTH_SHORT).show();
+            }
         });
 
 
+
+
     }
-
-
 
 
     private class MyChrome extends WebChromeClient {
@@ -281,14 +373,52 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+        @SuppressLint("LongLogTag")
+        @Override
+        public void onPermissionRequest(PermissionRequest request) {
+            super.onPermissionRequest(request);
+
+//                Environment.getExternalStorageDirectory(), "filename.wav";
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                String permissions[] = {Manifest.permission.RECORD_AUDIO,
+                        Manifest.permission.MODIFY_AUDIO_SETTINGS,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE};
+
+                for (String r : request.getResources()) {
+                    if (r.equals("android.webkit.resource.AUDIO_CAPTURE")){
+                        int code = ActivityCompat.checkSelfPermission(MainActivity.this, permissions[0]);
+
+                        ActivityCompat.requestPermissions(MainActivity.this, permissions, 1);
+                        request.grant(request.getResources());
+
+//                            if (code == PackageManager.PERMISSION_DENIED) {
+//
+//                            }
+                    }
+                }
+            }
+        }
+
+
         public void onProgressChanged(WebView view, int progress) {
             progressbar.setProgress(progress);
+            mProgressbarText.setText(progress + "%");
+
+            // calculating padding based on percentage
+            int paddingL = ((int)Math.ceil(mDisplayWidth / 100.00)) * progress;
+            mProgressbarText.setPadding(paddingL, 0, 0, 0);
+
             if (progress == 100) {
-                progressbar.setVisibility(View.INVISIBLE);
+                mProgressbarText.setPadding(0,0,0,0);
+                progressbar.setVisibility(View.GONE);
+                mProgressbarText.setVisibility(View.GONE);
             }else{
                 progressbar.setVisibility(View.VISIBLE);
+                mProgressbarText.setVisibility(View.VISIBLE);
             }
-            super.onProgressChanged(view,progress  );
+            super.onProgressChanged(view,progress);
 
         }
 
@@ -325,6 +455,9 @@ public class MainActivity extends AppCompatActivity {
             ((FrameLayout)getWindow().getDecorView()).addView(this.mCustomView, new FrameLayout.LayoutParams(-1, -1));
             getWindow().getDecorView().setSystemUiVisibility(3846 | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
         }
+
+
+
     }
 
 

@@ -7,30 +7,87 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <ProgressBar
+
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="3dp"
+        android:layout_height="wrap_content">
 
-        android:background="#F8C6D6"
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="#FBF4F6"
+            android:id="@+id/progressbarId"
+            android:layout_marginTop="1dp"
+            android:layout_gravity="center"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal" />
+        <TextView
+            android:id="@+id/tx_progressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FA6565"
+            android:gravity="center"
+            android:textSize="9sp"
+            android:text="0" />
+    </FrameLayout>
 
-        android:id="@+id/progressbarId"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+    <WebView
+        android:visibility="visible"
+        android:id="@+id/webView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
-        />
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefreshHotelDetails"
+    <!--Handle page loading failed-->
+    <RelativeLayout
+        android:id="@+id/web_view_load_error_page"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
-        <WebView
-            android:id="@+id/webView1"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="No internet connection!" />
+
+        <LinearLayout
+            android:gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="10dp"
+            android:background="@drawable/border">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center|start"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="Please check your internet connection."
+                android:textColor="@color/cnn_error_msg"/>
+
+            <TextView
+
+                android:id="@+id/cnn_lost_retry_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="RETRY"
+                android:gravity="end|center"
+                android:paddingLeft="10dp"
+                android:paddingRight="20dp"
+                android:textColor="@color/cnn_error_retry"
+                android:textStyle="bold"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
 </LinearLayout>

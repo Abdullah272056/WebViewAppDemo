@@ -1,4 +1,4 @@
-package com.example.image_upload_webview;
+package com.gmpabel.easyapps;
 
 import android.content.Context;
 

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.image_upload_webview">
+    package="com.gmpabel.easyapps">
 
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="16"
         tools:ignore="GradleOverrides" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -20,15 +20,15 @@
         android:usesCleartextTraffic="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/app_logo"
+        android:icon="@mipmap/ic_launcher_foreground"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/app_logo"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Image_upload_webview"
-        tools:targetApi="31"
+        tools:targetApi="32"
         tools:ignore="RtlEnabled">
         <activity
-            android:name=".MainActivity"
+            android:name="com.gmpabel.easyapps.MainActivity"
             android:configChanges="orientation|screenSize"
             android:exported="true">
             <intent-filter>
