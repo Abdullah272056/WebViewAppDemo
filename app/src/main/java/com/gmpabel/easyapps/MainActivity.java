@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     //private Button button;
      WebView webView;
     ProgressBar progressbar;
-//    SwipeRefreshLayout swipeRefreshHotelDetails;
+    SwipeRefreshLayout swipeRefreshHotelDetails;
 
 
   //  WebView webView;
@@ -148,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
 
         webView = findViewById(R.id.webView1);
         progressbar = findViewById(R.id.progressbarId);
-        //swipeRefreshHotelDetails=findViewById(R.id.swipeRefreshHotelDetails);
+        swipeRefreshHotelDetails=findViewById(R.id.swipeRefreshHotelDetails);
 
 
         webView = findViewById(R.id.webView1);
@@ -213,12 +214,12 @@ public class MainActivity extends AppCompatActivity {
 
 
         //refresh layout
-//        swipeRefreshHotelDetails.setOnRefreshListener(() -> {
-//            // Log.e("ref","ref: 1");
-//            webView.reload();
-//            swipeRefreshHotelDetails.setRefreshing(false);
-//
-//        });
+        swipeRefreshHotelDetails.setOnRefreshListener(() -> {
+            // Log.e("ref","ref: 1");
+            webView.reload();
+            swipeRefreshHotelDetails.setRefreshing(false);
+
+        });
 
 
         final boolean[] loadState = {true, false, true}; // loadingFinished, redirect,

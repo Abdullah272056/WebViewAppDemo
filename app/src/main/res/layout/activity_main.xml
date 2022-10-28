@@ -31,61 +31,78 @@
             android:text="0" />
     </FrameLayout>
 
-    <WebView
-        android:visibility="visible"
-        android:id="@+id/webView1"
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshHotelDetails"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-
-    <!--Handle page loading failed-->
-    <RelativeLayout
-        android:id="@+id/web_view_load_error_page"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="No internet connection!" />
-
+        android:layout_height="match_parent">
         <LinearLayout
-            android:gravity="center"
+
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="10dp"
-            android:background="@drawable/border">
+            android:layout_height="match_parent">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center|start"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:text="Please check your internet connection."
-                android:textColor="@color/cnn_error_msg"/>
-
-            <TextView
-
-                android:id="@+id/cnn_lost_retry_btn"
+            <WebView
+                android:visibility="visible"
+                android:id="@+id/webView1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="RETRY"
-                android:gravity="end|center"
-                android:paddingLeft="10dp"
-                android:paddingRight="20dp"
-                android:textColor="@color/cnn_error_retry"
-                android:textStyle="bold"
-                android:layout_gravity="center"/>
+                android:layout_height="match_parent"/>
+            <RelativeLayout
+                android:id="@+id/web_view_load_error_page"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="No internet connection!" />
+
+                <LinearLayout
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal"
+                    android:layout_alignParentBottom="true"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/border">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|start"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:text="Please check your internet connection."
+                        android:textColor="@color/cnn_error_msg"/>
+
+                    <TextView
+
+                        android:id="@+id/cnn_lost_retry_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="RETRY"
+                        android:gravity="end|center"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="20dp"
+                        android:textColor="@color/cnn_error_retry"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
 
         </LinearLayout>
 
-    </RelativeLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+    <!--Handle page loading failed-->
+
 
 
 
